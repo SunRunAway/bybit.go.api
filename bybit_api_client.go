@@ -7,7 +7,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/wuhewuhe/bybit.go.api/models"
 	"io"
 	"log"
 	"net/http"
@@ -18,7 +17,9 @@ import (
 
 	"github.com/bitly/go-simplejson"
 	jsoniter "github.com/json-iterator/go"
+
 	"github.com/wuhewuhe/bybit.go.api/handlers"
+	"github.com/wuhewuhe/bybit.go.api/models"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
@@ -37,10 +38,10 @@ type ServerResponse struct {
 	Time       int64       `json:"time"`
 }
 
-func SendRequest(ctx context.Context, opts []RequestOption, r *request, s *BybitClientRequest, err error) []byte {
+func SendRequest(ctx context.Context, opts []RequestOption, r *request, s *BybitClientRequest, err error) ([]byte, error) {
 	r.setParams(s.params)
 	data, err := s.c.callAPI(ctx, r, opts...)
-	return data
+	return data, err
 }
 
 func GetServerResponse(err error, data []byte) (*ServerResponse, error) {
